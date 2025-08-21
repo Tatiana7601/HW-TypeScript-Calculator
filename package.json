@@ -10,6 +10,7 @@
     "readline-sync": "^1.4.10"
   },
   "devDependencies": {
+    "@types/node": "^24.3.0",
     "typescript": "^5.5.3"
   },
   "private": true

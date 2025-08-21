@@ -12,6 +12,9 @@ function multiply(a: number, b: number): number {
 }
 
 function divide(a: number, b: number): number {
+    if (b == 0){
+        throw new Error("Division by zero");
+    }
     return a / b;
 }
 
@@ -69,4 +72,34 @@ console.log("6 * 8 =", calculate("*",6,8));
 console.log("50 / 5 =",calculate("/",50,5));
 console.log("5 ^ 2 =", calculate("^",5,2));
 
+//Сделать ввод через `prompt(...)` или `readline-sync`,
+// чтобы пользователь вводил что-то вроде `5 * 10`, а программа выводила результат в консоль.
+
+const { PassThrough, Writable } = require('node:stream');
+const pass = new PassThrough();
+const writable = new Writable();
+
+pass.pipe(writable);
+pass.unpipe(writable);
+// readableFlowing is now false.
+
+pass.on('data', (chunk: Buffer) => { console.log(chunk.toString()); });
+// readableFlowing is still false.
+pass.write('ok');  // Will not emit 'data'.
+pass.resume();     // Must be called to make stream emit 'data'.
+// readableFlowing is now true.
+
+import {stdin, stdout} from 'node:process';
+
+stdin.on("data",(chunk:Buffer):void => {
+    const input: string = chunk.toString().trim();
+    const parts: string[] = input.split(" ");
+
+    const a = +parts[0];
+    const oper = parts[1];
+    const b = +parts[2];
+
+    console.log("Result:" + calculate(oper,a,b));
+    process.exit()
+});
 
